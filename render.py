@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 
 
-class Render:
+class Renderer:
     def __init__(self):
         self.deep_x_streng = -.6
         self.deep_y_streng = -.5
@@ -20,3 +20,18 @@ class Render:
 
     def render(self):
         pass
+
+
+class RenderObj:
+
+    type = {
+        'point': 1,
+        'line': 2,
+        'triangle': 3,
+        'rectangle': 4
+    }
+
+    def __init__(self, point_list=None, index=-1):
+        self.point_list = point_list
+        self.type = None
+        self.index = index
