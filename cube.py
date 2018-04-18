@@ -108,22 +108,15 @@ class Cube:
         self.radius = radius
         self.location = location
         self.rotation = rotation
-        self.vertex = [Point3d(self.radius + self.location.x, self.radius + self.location.y,
-                               self.radius + self.location.z),
-                       Point3d(self.radius + self.location.x, -self.radius + self.location.y,
-                               self.radius + self.location.z),
-                       Point3d(self.radius + self.location.x, -self.radius + self.location.y,
-                               -self.radius + self.location.z),
-                       Point3d(self.radius + self.location.x, self.radius + self.location.y,
-                               -self.radius + self.location.z),
-                       Point3d(-self.radius + self.location.x, self.radius + self.location.y,
-                               self.radius + self.location.z),
-                       Point3d(-self.radius + self.location.x, -self.radius + self.location.y,
-                               self.radius + self.location.z),
-                       Point3d(-self.radius + self.location.x, -self.radius + self.location.y,
-                               -self.radius + self.location.z),
-                       Point3d(-self.radius + self.location.x, self.radius + self.location.y,
-                               -self.radius + self.location.z)]
+        self.vertex = [
+            Point3d(self.radius + self.location.x, self.radius + self.location.y, self.radius + self.location.z),
+            Point3d(self.radius + self.location.x, -self.radius + self.location.y, self.radius + self.location.z),
+            Point3d(self.radius + self.location.x, -self.radius + self.location.y, -self.radius + self.location.z),
+            Point3d(self.radius + self.location.x, self.radius + self.location.y, -self.radius + self.location.z),
+            Point3d(-self.radius + self.location.x, self.radius + self.location.y, self.radius + self.location.z),
+            Point3d(-self.radius + self.location.x, -self.radius + self.location.y, self.radius + self.location.z),
+            Point3d(-self.radius + self.location.x, -self.radius + self.location.y, -self.radius + self.location.z),
+            Point3d(-self.radius + self.location.x, self.radius + self.location.y, -self.radius + self.location.z)]
         self.f1 = Face(self.vertex[0], self.vertex[1], self.vertex[2], self.vertex[3])  # fijo x
         self.f2 = Face(self.vertex[4], self.vertex[5], self.vertex[6], self.vertex[7])  # fijo -x
         self.f3 = Face(self.vertex[0], self.vertex[4], self.vertex[7], self.vertex[3])  # fijo y
