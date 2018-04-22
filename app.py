@@ -35,9 +35,9 @@ class UserInterface:
         self._aling_l = 65
         self._aling_h = 40
         self.color_bg = (100, 100, 100)
-        self.x_color = (50, 50, 150)
+        self.x_color = (150, 50, 50)
         self.y_color = (50, 150, 50)
-        self.z_color = (150, 50, 50)
+        self.z_color = (50, 50, 150)
 
     def init(self):
         pg.display.set_caption("Cube Transform")
@@ -121,9 +121,9 @@ class App:
         self.distance = 13
         self.renderer = Renderer(width, height+60, self.distance)
         self.color_bg = (150, 150, 150)
-        self.x_color = (50, 50, 150)
+        self.x_color = (150, 50, 50)
         self.y_color = (50, 150, 50)
-        self.z_color = (150, 50, 50)
+        self.z_color = (50, 50, 150)
         self.space = [  # ejes
             [c.Point3d(-self.distance, 0, 0), c.Point3d(self.distance, 0, 0)],
             [c.Point3d(0, 0, -self.distance), c.Point3d(0, 0, self.distance)],
@@ -138,12 +138,22 @@ class App:
             [c.Point3d(self.distance, -self.distance, self.distance), c.Point3d(self.distance, -self.distance, -self.distance)],
             [c.Point3d(-self.distance, self.distance, -self.distance), c.Point3d(self.distance, self.distance, -self.distance)],
             [c.Point3d(self.distance, self.distance, -self.distance), c.Point3d(self.distance, -self.distance, -self.distance)]]
+        self.space_shapes = [  # planos de referencia
+            [self.space[3][0], self.space[3][1], self.space[5][1], self.space[8][0]],
+            [self.space[3][0], self.space[5][0], self.space[6][1], self.space[9][1]],
+            [self.space[3][0], self.space[9][1], self.space[11][0], self.space[7][1]]]
         self.x_state = 0
         self.y_state = 0
         self.z_state = 0
 
     def init(self):
         pass
+
+    def _order_faces(self):
+        p = c.Point3d(self.distance, self.distance, self.distance)
+        faces = self.cube.faces
+        faces = sorted(faces, key=lambda x: x.dist_center_to_mid(p), reverse=True)
+        return faces
 
     def update(self, x_state, y_state, z_state):
         self.cube.rotate('x', PI * 2 / 100 * (x_state - self.x_state))
@@ -155,12 +165,18 @@ class App:
 
     def draw(self):
         pg.draw.rect(screen, self.color_bg, pg.Rect(0, 60, width, height-60))
+        self.renderer.render_shape(screen, self.space_shapes[0], (200, 200, 200))
+        self.renderer.render_shape(screen, self.space_shapes[1], (200, 200, 200))
+        self.renderer.render_shape(screen, self.space_shapes[2], (200, 200, 200))
         for line in self.space:
             self.renderer.render_line(screen, line)
         for point in self.cube.vertex:
             self.renderer.render_point(screen, point)
-        for line in self.cube.edges:
-            self.renderer.render_line(screen, line)
+        grey = 100
+        for f in self._order_faces():
+            self.renderer.render_shape(screen, f.vertex, (grey, grey, grey))
+            for line in f.edges:
+                self.renderer.render_line(screen, line)
         for v in self.cube.vertex:
             # proyect x
             point = c.Point3d(-self.distance, v.cords[1], v.cords[2])

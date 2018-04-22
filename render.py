@@ -26,6 +26,11 @@ class Renderer:
         center = self._convert_to_2d(point).cords
         draw.circle(screen, color, [int(center[0]), int(center[1])], 4)
 
-    def render_shape(self):
-        pass
+    def render_shape(self, screen, points, color=(0, 0, 0)):
+        lis = []
+        for point in points:
+            p = self._convert_to_2d(point).cords
+            lis.append([int(p[0]), int(p[1])])
+        draw.polygon(screen, color, lis)
+
 

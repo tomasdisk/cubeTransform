@@ -1,4 +1,4 @@
-from math import sin, cos
+from math import sin, cos, sqrt
 # inported below within methods
 # import matplotlib.pyplot as plt
 # import matplotlib.lines as mlines
@@ -88,6 +88,11 @@ class Face:
         self.p2 = p2
         self.p3 = p3
         self.p4 = p4
+        self.vertex = [p1, p2, p3, p4]
+        self.edges = [(p1, p2),
+                      (p2, p3),
+                      (p3, p4),
+                      (p4, p1)]
 
     def rotate(self, axis, angle):
         rot_center = Point3d(0, 0, 0)
@@ -101,6 +106,10 @@ class Face:
         y = (self.p1.y + self.p2.y + self.p3.y + self.p4.y) / 4
         z = (self.p1.z + self.p2.z + self.p3.z + self.p4.z) / 4
         return Point3d(x, y, z)
+
+    def dist_center_to_mid(self, point):
+        p_mid = self.mid_point()
+        return sqrt((point.cords[0]-p_mid.cords[0])**2+(point.cords[1]-p_mid.cords[1])**2+(point.cords[1]-p_mid.cords[1])**2)
 
 
 class Cube:
@@ -123,6 +132,7 @@ class Cube:
         self.f4 = Face(self.vertex[1], self.vertex[5], self.vertex[6], self.vertex[2])  # fijo -y
         self.f5 = Face(self.vertex[0], self.vertex[4], self.vertex[5], self.vertex[1])  # fijo z
         self.f6 = Face(self.vertex[3], self.vertex[7], self.vertex[6], self.vertex[2])  # fijo -z
+        self.faces = [self.f1, self.f2, self.f3, self.f4, self.f5, self.f6]
         # los edges son la union de cada punto de la cara f1 y f2 con el punto que le sigue de la misma cara
         # y las uniones entre puntos iguales entre caras
         self.edges = [(self.f1.p1, self.f1.p2),
